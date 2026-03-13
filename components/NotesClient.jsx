@@ -1,19 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewNoteButton from "./NewNoteButton";
 import NoteCard from "./NoteCard";
 import NewNoteForm from "./NewNoteForm";
 import { Toaster } from "react-hot-toast";
-import { Outfit } from "next/font/google";
+import axios from "axios";
 
-const outfit = Outfit({
-  subsets: ["latin"],
-});
-
-function NotesClient({ data }) {
+function NotesClient() {
+  const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
-  const [notes, setNotes] = useState(data);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    async function fetchNotes() {
+      const response = await axios.get("api/get-notes");
+      console.log(response.data);
+      setNotes(response.data);
+      setLoading(false);
+    }
+    fetchNotes();
+  }, []);
 
   return (
     <div className="min-h-screen w-screen bg-black flex flex-col p-4 pt-8 items-center">
@@ -29,7 +36,7 @@ function NotesClient({ data }) {
         </div>
       ) : (
         <p className="text-3xl mt-48 items-center justify-center text-white">
-          No notes found!
+          {loading ? "Loading..." : "No notes found!"}
         </p>
       )}
     </div>
