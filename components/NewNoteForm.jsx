@@ -2,6 +2,7 @@ import { newNoteReducer } from "@/reducers/NewNoteReducer";
 import axios from "axios";
 import { X } from "lucide-react";
 import React, { useReducer, useState } from "react";
+import toast from "react-hot-toast";
 
 function NewNoteForm({ adding, setAdding, setNotes }) {
   const [formState, dispatch] = useReducer(newNoteReducer, {
@@ -19,13 +20,15 @@ function NewNoteForm({ adding, setAdding, setNotes }) {
       title: formState.title,
       content: formState.content,
     });
-    if (response.status !== 200) {
+    console.log(response.status);
+    if (response.status !== 201) {
       setError("Error adding note");
       return;
     }
     setNotes((notes) => [
       ...notes,
       {
+        id: response.data.id,
         title: formState.title,
         content: formState.content,
       },
@@ -33,6 +36,7 @@ function NewNoteForm({ adding, setAdding, setNotes }) {
     dispatch({ type: "SET_TITLE", title: "" });
     dispatch({ type: "SET_CONTENT", content: "" });
     setAdding(false);
+    toast.success("Added successfully!");
   };
 
   return (
@@ -71,7 +75,7 @@ function NewNoteForm({ adding, setAdding, setNotes }) {
           e.preventDefault();
           addNote();
         }}
-        className="bg-purple-500 text-white p-2 w-full rounded-lg mt-12 hover:cursor-pointer hover:bg-purple-600 transition-colors"
+        className="bg-fuchsia-500 text-white p-2 w-full rounded-lg mt-12 hover:cursor-pointer hover:bg-purple-600 transition-colors"
       >
         Add
       </button>

@@ -4,19 +4,26 @@ import React, { useState } from "react";
 import NewNoteButton from "./NewNoteButton";
 import NoteCard from "./NoteCard";
 import NewNoteForm from "./NewNoteForm";
+import { Toaster } from "react-hot-toast";
+import { Outfit } from "next/font/google";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+});
 
 function NotesClient({ data }) {
   const [adding, setAdding] = useState(false);
   const [notes, setNotes] = useState(data);
 
   return (
-    <div className="h-screen w-screen bg-black flex flex-col p-4 pt-8 items-center">
+    <div className="min-h-screen w-screen bg-black flex flex-col p-4 pt-8 items-center">
+      <Toaster position="bottom-right" />
       <h1 className="text-white font-bold text-4xl">NotesNext</h1>
       <NewNoteButton adding={adding} setAdding={setAdding} />
       <NewNoteForm adding={adding} setAdding={setAdding} setNotes={setNotes} />
       <div className="grid grid-cols-4 gap-6 mt-8 w-full p-8">
         {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
+          <NoteCard key={note.id} note={note} setNotes={setNotes} />
         ))}
       </div>
     </div>

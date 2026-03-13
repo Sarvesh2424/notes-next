@@ -5,12 +5,19 @@ export async function PUT(request) {
   try {
     const { id, content } = await request.json();
     const db = await connectToDB();
-    await db.collection("notes").updateOne({ id }, { content });
-    return new NextResponse({
-      message: "Edited note successfully",
-      status: 200,
-    });
+    await db.collection("notes").updateOne({ id }, { $set: { content } });
+    return NextResponse.json(
+      {
+        message: "Edited note successfully",
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (err) {
-    return new NextResponse({ message: "Failed to edit note", status: 400 });
+    return NextResponse.json(
+      { message: "Failed to edit note" },
+      { status: 400 },
+    );
   }
 }
