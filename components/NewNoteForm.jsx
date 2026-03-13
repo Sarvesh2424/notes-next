@@ -41,7 +41,7 @@ function NewNoteForm({ adding, setAdding, setNotes }) {
 
   return (
     <div
-      className={`bg-white fixed top-0 right-0 p-6 z-20 w-1/5 h-screen rounded-l-3xl shadow-2xl transform transition-transform duration-300 ease-out ${adding ? "translate-x-0" : "translate-x-full"}`}
+      className={`bg-white lg:rounded-t-none lg:rounded-l-3xl  fixed top-0 right-0 p-6 z-20 w-full lg:w-1/5 h-screen rounded-t-3xl shadow-2xl transform transition-transform duration-300 ease-out ${adding ? "translate-y-1/3 lg:translate-y-0 lg:translate-x-0" : "translate-y-full lg:translate-y-0 lg:translate-x-full"}`}
     >
       <button onClick={() => setAdding(false)} className="hover:cursor-pointer">
         <X className="w-10 h-10" />
