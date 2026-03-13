@@ -13,10 +13,9 @@ function NoteCard({ note, setNotes }) {
 
   const deleteNote = async () => {
     console.log(currNote.id);
-    const response = await axios.delete(
-      "http://localhost:3000/api/delete-note",
-      { data: { id: currNote.id } },
-    );
+    const response = await axios.delete("/api/delete-note", {
+      data: { id: currNote.id },
+    });
     if (response.status !== 200) {
       setError("Error deleting note");
       toast.error("Error deleting :(");
@@ -27,7 +26,7 @@ function NoteCard({ note, setNotes }) {
   };
 
   const editNote = async () => {
-    const response = await axios.put("http://localhost:3000/api/edit-note", {
+    const response = await axios.put("/api/edit-note", {
       id: currNote.id,
       content: currNote.content,
     });

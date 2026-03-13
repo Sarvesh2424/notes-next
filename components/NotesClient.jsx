@@ -21,11 +21,17 @@ function NotesClient({ data }) {
       <h1 className="text-white font-bold text-4xl">Notes Next</h1>
       <NewNoteButton adding={adding} setAdding={setAdding} />
       <NewNoteForm adding={adding} setAdding={setAdding} setNotes={setNotes} />
-      <div className="grid grid-cols-4 gap-6 mt-8 w-full p-8">
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} setNotes={setNotes} />
-        ))}
-      </div>
+      {notes.length > 0 ? (
+        <div className="grid grid-cols-4 gap-6 mt-8 w-full p-8">
+          {notes.map((note) => (
+            <NoteCard key={note.id} note={note} setNotes={setNotes} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-3xl mt-48 items-center justify-center text-white">
+          No notes found!
+        </p>
+      )}
     </div>
   );
 }

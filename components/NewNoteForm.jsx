@@ -16,7 +16,7 @@ function NewNoteForm({ adding, setAdding, setNotes }) {
       setError("Fill the required fields");
       return;
     }
-    const response = await axios.post("http://localhost:3000/api/add-note", {
+    const response = await axios.post("/api/add-note", {
       title: formState.title,
       content: formState.content,
     });
