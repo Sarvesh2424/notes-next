@@ -1,0 +1,14 @@
+name: sample
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  exec:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: PRINT
+        run: echo "Hello world"
+      
