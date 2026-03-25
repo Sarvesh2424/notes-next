@@ -9,6 +9,7 @@ export async function DELETE(request) {
     return NextResponse.json(
       {
         message: "Deleted note successfully",
+        status: 200,
       },
       { status: 200 },
     );

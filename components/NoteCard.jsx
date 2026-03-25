@@ -1,47 +1,70 @@
 "use client";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Trash2, Pen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
+async function editNote(note) {
+  const response = await fetch("/api/edit-note", {
+    method: "PUT",
+    body: JSON.stringify(note),
+  });
+
+  return response.json();
+}
+
+async function deleteNote(note) {
+  const response = await fetch("/api/delete-note", {
+    method: "DELETE",
+    body: JSON.stringify(note),
+  });
+
+  return response.json();
+}
+
 function NoteCard({ note, setNotes }) {
   const [currNote, setCurrNote] = useState(note);
   const [editing, setEditing] = useState(false);
-  const [error, setError] = useState("");
   const contentRef = useRef(null);
+  const editMutation = useMutation({
+    mutationFn: editNote,
+    onSuccess: (response) => {
+      if (response.status == 200) {
+        queryClient.invalidateQueries({ queryKey: ["notes"] });
+        setEditing(false);
+        toast.success("Edited successfully!");
+      } else {
+        toast.error("Error editing note...");
+      }
+    },
+    onError: () => {
+      toast.error("Error editing note...");
+    },
+  });
+  const deleteMutation = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: (response) => {
+      if (response.status == 200) {
+        queryClient.invalidateQueries({ queryKey: ["notes"] });
+        toast.success("Deleted successfully!");
+      } else {
+        toast.error("Error deleting note...");
+      }
+    },
+    onError: () => {
+      toast.error("Error deleted note...");
+    },
+  });
+  const queryClient = useQueryClient();
 
-  const deleteNote = async () => {
-    console.log(currNote.id);
-    const response = await axios.delete("/api/delete-note", {
-      data: { id: currNote.id },
-    });
-    if (response.status !== 200) {
-      setError("Error deleting note");
-      toast.error("Error deleting :(");
-      return;
-    }
-    setNotes((notes) => notes.filter((n) => n.id !== currNote.id));
-    toast.success("Deleted successfully!");
+  const onDelete = () => {
+    deleteMutation.mutate({ id: currNote.id });
   };
 
-  const editNote = async () => {
-    const response = await axios.put("/api/edit-note", {
-      id: currNote.id,
-      content: currNote.content,
-    });
-    if (response.status !== 200) {
-      setError("Error editing note");
-      toast.error("Error editing :(");
-      return;
-    }
-    setNotes((notes) =>
-      notes.map((n) =>
-        n.id === currNote.id ? { ...n, content: currNote.content } : n,
-      ),
-    );
-    setEditing(false);
-    toast.success("Edited successfully!");
+  const onEdit = () => {
+    editMutation.mutate({ id: currNote.id, content: currNote.content });
   };
 
   useEffect(() => {
@@ -56,7 +79,7 @@ function NoteCard({ note, setNotes }) {
         <h2 className="text-white text-2xl font-semibold">{note.title}</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => deleteNote()}
+            onClick={() => onDelete()}
             className="bg-red-100 text-red-500 p-2 rounded-full hover:cursor-pointer hover:bg-red-200 transition-colors"
           >
             <Trash2 />
@@ -82,11 +105,10 @@ function NoteCard({ note, setNotes }) {
             value={currNote.content}
             className="mt-4 text-lg border-2 border-black rounded-lg p-2 w-full"
           />
-          {error && <p className="text-red-800 mt-2">{error}</p>}
           <button
             onClick={(e) => {
               e.preventDefault();
-              editNote();
+              onEdit();
             }}
             className="bg-green-500 text-white w-full p-2 rounded-lg mt-2 hover:bg-green-600 hover:cursor-pointer transition-colors"
           >

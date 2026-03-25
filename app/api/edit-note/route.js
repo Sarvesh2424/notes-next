@@ -9,6 +9,7 @@ export async function PUT(request) {
     return NextResponse.json(
       {
         message: "Edited note successfully",
+        status:200
       },
       {
         status: 200,
