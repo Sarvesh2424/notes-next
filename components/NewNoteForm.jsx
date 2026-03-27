@@ -51,7 +51,7 @@ function NewNoteForm() {
 
   return (
     <div
-      className={`bg-white lg:rounded-t-none lg:rounded-l-3xl fixed bottom-0 lg:top-0 right-0 p-6 z-20 w-full lg:w-1/5 h-screen rounded-t-3xl shadow-2xl transform transition-transform duration-300 ease-out ${addMode ? "translate-y-1/8 sm:translate-y-1/3  lg:translate-y-0 lg:translate-x-0" : "translate-y-full lg:translate-y-0 lg:translate-x-full"}`}
+      className={`bg-white lg:rounded-t-none lg:rounded-l-3xl fixed bottom-0 lg:top-0 right-0 p-6 z-20 w-full lg:w-1/5 h-screen rounded-t-3xl shadow-2xl transform transition-transform duration-300 ease-out ${addMode ? "translate-y-1/6 sm:translate-y-1/3  lg:translate-y-0 lg:translate-x-0" : "translate-y-full lg:translate-y-0 lg:translate-x-full"}`}
     >
       <button
         onClick={() => setAddMode(false)}
@@ -89,7 +89,7 @@ function NewNoteForm() {
           e.preventDefault();
           onSubmit();
         }}
-        className="bg-fuchsia-500 text-white p-2 w-full rounded-lg mt-12 hover:cursor-pointer disabled:cursor-wait disabled:bg-gray-400 hover:bg-purple-600 transition-colors"
+        className={`bg-fuchsia-500 text-white p-2 w-full rounded-lg mt-12 hover:cursor-pointer disabled:cursor-wait ${isPending && "hover:cursor-wait"} disabled:bg-gray-400 hover:bg-purple-600 transition-colors`}
       >
         Add
       </button>
